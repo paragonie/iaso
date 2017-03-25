@@ -1,0 +1,26 @@
+{
+  "name": "paragonie/iaso",
+  "description": "Powerful JSON Toolkit, includes a JSON parser immune to Hash-DoS attacks",
+  "keywords": ["JSON"],
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "ParagonIE\\Iaso\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Paragon Initiative Enterprises",
+      "email": "security@paragonie.com"
+    }
+  ],
+  "require": {
+    "php": "^7",
+    "paragonie/constant_time_encoding": "^2",
+    "paragonie/sodium_compat": "^0|^1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6",
+    "vimeo/psalm": "dev-master"
+  }
+}
