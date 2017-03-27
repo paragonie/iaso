@@ -52,7 +52,10 @@ class Parser
             case "\x0d":
             case "\x20":
                 // Continue on whitespace.
-                break;
+                while (\preg_match('#(\x09|\x0a|\x0d|\x20)#', $state->getChar())) {
+                    ++$state->pos;
+                }
+                return $state;
             case '{':
                 // We're parsing an object.
                 \array_push(
@@ -107,7 +110,6 @@ class Parser
                 }
                 // Continue
                 break;
-
             case '0':
             case '1':
             case '2':
@@ -228,7 +230,7 @@ class Parser
             $key = $state->stack[$idx]['pending'];
             $state->stack[$idx]['obj'][$key] = $expect;
             // We don't need this anymore. Unset it.
-            unset($state->stack[$idx]['pending']);
+            $state->stack[$idx]['pending'] = null;
         } else {
             throw new JSONError('Unexpected parent type');
         }
@@ -266,7 +268,7 @@ class Parser
             $key = $state->stack[$idx]['pending'];
             $state->stack[$idx]['obj'][$key] = null;
             // We don't need this anymore. Unset it.
-            unset($state->stack[$idx]['pending']);
+            $state->stack[$idx]['pending'] = null;
         } else {
             throw new JSONError('Unexpected parent type');
         }
@@ -325,13 +327,14 @@ class Parser
         } elseif ($popped['type'] === '{') {
             $idx = $state->getLastIndex();
             if (empty($state->stack[$idx]['pending'])) {
-                // Uh oh. Dangling bool value.
+                var_dump($state->stack);
+                // Uh oh. Dangling numeric value.
                 throw new JSONError('Unexpected numeric value');
             }
             $key = $state->stack[$idx]['pending'];
             $state->stack[$idx]['obj'][$key] = $result;
             // We don't need this anymore. Unset it.
-            unset($state->stack[$idx]['pending']);
+            $state->stack[$idx]['pending'] = null;
         } else {
             throw new JSONError('Unexpected parent type');
         }
@@ -349,14 +352,15 @@ class Parser
     {
         $start = $pos = $state->pos;
         $len = 0;
-        $escaped = true;
         do {
             ++$pos;
             ++$len;
-            if ($state->data[$pos] === '"') {
-                // Escaped quote character? Keep reading.
-                $escaped = $state->data[$pos - 1] === '\\';
+            $search = \strpos($state->data, '"', $pos);
+            if ($search !== false) {
+                $pos = $search;
+                $len = $pos - $start;
             }
+            $escaped = $state->data[$pos - 1] === '\\';
         } while ($escaped && $pos < $state->length);
 
         $idx = $state->getLastIndex();
@@ -397,7 +401,7 @@ class Parser
                 $state->stack[$idx]['obj'][$key] = $string;
 
                 // We don't need this anymore. Unset it.
-                unset($state->stack[$idx]['pending']);
+                $state->stack[$idx]['pending'] = null;
             } else {
                 // We're expecting a value for this later.
                 if ($state->data[$pos + 1] !== ':') {

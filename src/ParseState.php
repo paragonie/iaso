@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace ParagonIE\Iaso;
 
+use ParagonIE\ConstantTime\Binary;
 use ParagonIE\Iaso\Contract\Blank;
 
 /**
@@ -74,6 +75,9 @@ class ParseState
      */
     public function getChar(): string
     {
+        if ($this->pos >= Binary::safeStrlen($this->data)) {
+            return '';
+        }
         return $this->data[$this->pos];
     }
 

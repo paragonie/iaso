@@ -17,11 +17,6 @@ abstract class JSON
     /**
      * @var string
      */
-    protected static $leftSeed;
-
-    /**
-     * @var string
-     */
     protected static $seed;
 
     /**
@@ -84,21 +79,6 @@ abstract class JSON
             self::$parser = new Parser;
         }
         return self::$parser;
-    }
-
-    /**
-     * Get a unique random secret once per script execution
-     *
-     * @return string
-     */
-    public static function getLeftSeed(): string
-    {
-        if (!self::$leftSeed) {
-            self::$leftSeed = \random_bytes(
-                \ParagonIE_Sodium_Compat::CRYPTO_SHORTHASH_KEYBYTES
-            );
-        }
-        return self::$leftSeed;
     }
 
     /**

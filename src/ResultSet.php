@@ -161,8 +161,7 @@ abstract class ResultSet implements \ArrayAccess
         $leftKey = \spl_object_hash($this) . '##' . $key;
         return \rtrim(
             Base64UrlSafe::encode(
-                \ParagonIE_Sodium_Compat::crypto_shorthash($leftKey, JSON::getLeftSeed()) .
-                \ParagonIE_Sodium_Compat::crypto_shorthash($key, JSON::getSeed())
+                \ParagonIE_Sodium_Compat::crypto_shorthash($leftKey, JSON::getSeed())
             ),
             '='
         );

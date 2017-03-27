@@ -2,3 +2,4 @@
 /vendor/
 /.php_cs.cache
 /composer.lock
+/tests/benchmarks/1048576.json
