@@ -22,7 +22,7 @@ abstract class ResultSet implements \ArrayAccess
      * @param bool $recurse
      * @return array
      */
-    public function asArray(bool $recurse = false): array
+    public function asArray(bool $recurse = false)
     {
         $array = [];
         foreach ($this->iasoProtectedInnerResults as $idx => $map) {
