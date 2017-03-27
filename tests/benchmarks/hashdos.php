@@ -16,7 +16,7 @@ $string = \file_get_contents('poc.json');
 $start = $end = 0.00;
 
 $start = \microtime(true);
-# $native = \json_decode($string);
+$native = \json_decode($string);
 $end = \microtime(true);
 
 $diff = $end - $start;
