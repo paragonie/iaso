@@ -1,5 +1,10 @@
 # Iaso
 
+[![Build Status](https://travis-ci.org/paragonie/iaso.svg?branch=master)](https://travis-ci.org/paragonie/iaso)
+[![Latest Stable Version](https://poser.pugx.org/paragonie/iaso/v/stable)](https://packagist.org/packages/paragonie/iaso)
+[![Latest Unstable Version](https://poser.pugx.org/paragonie/iaso/v/unstable)](https://packagist.org/packages/paragonie/iaso)
+[![License](https://poser.pugx.org/paragonie/iaso/license)](https://packagist.org/packages/paragonie/iaso)
+
 Iaso is a powerful JSON toolkit for PHP 7+, intended for any organization that
 builds or consumes JSON-based APIs.
  
