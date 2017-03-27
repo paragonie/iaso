@@ -158,12 +158,11 @@ abstract class ResultSet implements \ArrayAccess
      */
     protected function getHash(string $key): string
     {
-        $seed = JSON::getSeed();
         $leftKey = \spl_object_hash($this) . '##' . $key;
         return \rtrim(
             Base64UrlSafe::encode(
-                \ParagonIE_Sodium_Compat::crypto_shorthash($leftKey, $seed) .
-                \ParagonIE_Sodium_Compat::crypto_shorthash($key, $seed)
+                \ParagonIE_Sodium_Compat::crypto_shorthash($leftKey, JSON::getLeftSeed()) .
+                \ParagonIE_Sodium_Compat::crypto_shorthash($key, JSON::getSeed())
             ),
             '='
         );
