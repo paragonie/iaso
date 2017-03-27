@@ -207,6 +207,7 @@ class Parser
     protected function parseBool(ParseState $state, bool $expect = false): ParseState
     {
         if (empty($state->stack) && $state->pos === 0) {
+            $state->pos = Binary::safeStrlen($state->data) - 1;
             $state->result = new Bare($expect, 'bool');
             return $state;
         }
@@ -244,6 +245,7 @@ class Parser
     protected function parseNull(ParseState $state): ParseState
     {
         if (empty($state->stack) && $state->pos === 0) {
+            $state->pos = Binary::safeStrlen($state->data) - 1;
             $state->result = new Bare();
             return $state;
         }
@@ -308,6 +310,7 @@ class Parser
         }
 
         if (empty($state->stack) && $state->pos === 0) {
+            $state->pos = Binary::safeStrlen($state->data) - 1;
             $state->result = new Bare($result, $period ? 'float' : 'int');
             return $state;
         }
@@ -346,15 +349,14 @@ class Parser
     {
         $start = $pos = $state->pos;
         $len = 0;
+        $escaped = true;
         do {
             ++$pos;
             ++$len;
-            if ($state->data[$pos] !== '"') {
-                $escaped = true;
-                continue;
+            if ($state->data[$pos] === '"') {
+                // Escaped quote character? Keep reading.
+                $escaped = $state->data[$pos - 1] === '\\';
             }
-            // Escaped quote character? Keep reading.
-            $escaped = $state->data[$pos - 1] === '\\';
         } while ($escaped && $pos < $state->length);
 
         $idx = $state->getLastIndex();
@@ -363,8 +365,9 @@ class Parser
             $string = \str_replace(
                 '\"',
                 '"',
-                Binary::safeSubstr($state->data, $start + 1, $len)
+                Binary::safeSubstr($state->data, $start + 1, $len - 1)
             );
+            $state->pos = Binary::safeStrlen($state->data) - 1;
             $state->result = new Bare($string, 'string');
             return $state;
         }
