@@ -36,12 +36,3 @@ use ParagonIE\Iaso\ResultSet;
 $data = JSON::parse($string);
 var_dump($data instanceof ResultSet); /* bool(true) */
 ```
-
-### Contract-enforcing JSON parsing
-
-```php
-use ParagonIE\Iaso\JSON;
-use ParagonIE\Iaso\ResultSet;
-
-
-```
