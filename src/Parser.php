@@ -327,7 +327,6 @@ class Parser
         } elseif ($popped['type'] === '{') {
             $idx = $state->getLastIndex();
             if (empty($state->stack[$idx]['pending'])) {
-                var_dump($state->stack);
                 // Uh oh. Dangling numeric value.
                 throw new JSONError('Unexpected numeric value');
             }
